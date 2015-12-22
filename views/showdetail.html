@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet' href='/stylesheets/themes/default/easyui.css'/>
+    <link rel='stylesheet' href='/stylesheets/themes/icon.css'/>
+    <title></title>
+</head>
+<body>
+
+<table id="maintable" style="width: 100%">
+
+</table>
+
+<div id="tb" style="padding:3px">
+    <div>
+        <span>name:</span><input id="name" class="easyui-textbox"/>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch();">Search</a>
+    </div>
+    <div>
+        <a class="easyui-linkbutton" id="add" class="easyui-textbox" iconCls="icon-add" onclick="obj.add();">新增</a>
+        <a class="easyui-linkbutton" id="update" class="easyui-textbox" iconCls="icon-edit" onclick="obj.update();">修改</a>
+        <a class="easyui-linkbutton" id="delete" class="easyui-textbox" iconCls="icon-remove" onclick="obj.delete();">删除</a>
+        <a class="easyui-linkbutton" id="save" class="easyui-textbox" iconCls="icon-save" onclick="obj.save();">保存</a>
+        <a class="easyui-linkbutton" id="redo" class="easyui-textbox" iconCls="icon-redo" onclick="obj.redo();">撤销</a>
+    </div>
+</div>
+
+<div id="footer">
+    <a class="easyui-linkbutton">启用</a>
+    <a class="easyui-linkbutton">停用</a>
+</div>
+<script type="text/javascript" src="/javascripts/contrl.js"></script>
+
+</body>
+</html>
