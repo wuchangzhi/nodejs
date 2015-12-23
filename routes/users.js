@@ -5,7 +5,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-	res.render('showdetail',{"_layoutFile":false});
+	res.render('showdetail');
 });
 
 router.post("/data/",function(req,res){
@@ -52,20 +52,17 @@ router.post("/data/save",function(req,res){
 	}
 });
 
+router.get("/userdetail",function(req,res){
+	res.render('index',{title:"Test"});
+
+});
+
 router.post("/data/delete",function(req,res) {
 	var ids = req.body.ids.split(",");
 	console.log(ids);
 	UserModel.remove(ids,function(data){
-		console.log(data);
 		res.send(data);
 	});
-});
-
-
-router.get('/remove', function (req, res, next) {
-	var index = req.query.index;
-	users.splice(index,1);
-	res.render('showdetail',{"_layoutFile":false});
 });
 
 module.exports = router;

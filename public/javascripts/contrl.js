@@ -66,17 +66,27 @@ $(document).ready(function () {
 			editRow = undefined;
 			console.log(rowData);
 			$.post('/users/data/save', rowData, function (data, status) {
-				console.log(data + " " + status);
+				$("#maintable").datagrid('load');
 				$('#save').hide();
 				$('#redo').hide();
 			});
 
 		},
 		onSelect: function (rowIndex, rowData) {
-			console.log("onSelect" + rowIndex);
+			console.log("onSelect" + rowData);
 			if (!IsCheckFlag) {
 				IsCheckFlag = true;
 				$("#maintable").datagrid("unselectRow", rowIndex);
+
+				if($('#tabs').tabs("exists",$('.editcls').eq(rowIndex).text() + rowData.name)) {
+					$('#tabs').tabs("select",$('.editcls').eq(rowIndex).text() + rowData.name)
+				}else {
+					$('#tabs').tabs('add', {
+						title: $('.editcls').eq(rowIndex).text() + rowData.name,
+						closable: true,
+						href: "/users/userdetail/"
+					});
+				}
 			}
 		}
 	});
@@ -85,7 +95,7 @@ $(document).ready(function () {
 		pageList : [10,20,30],
 		beforePageText : "第",
 		afterPageText : "页",
-		displayMsg : "共{total}条",
+		displayMsg : "从 {from} 到 {to} 共{total}条",
 		buttons:"#footer"
 	});
 });
