@@ -64,29 +64,35 @@ $(document).ready(function () {
 		//},
 		onAfterEdit: function (rowIndex, rowData, changes) {
 			editRow = undefined;
-			console.log(rowData);
+
 			$.post('/users/data/save', rowData, function (data, status) {
 				$("#maintable").datagrid('load');
 				$('#save').hide();
 				$('#redo').hide();
+			}).error(function(xhr,errorText,errorType){
+				console.log(xhr.responseText.split("\n")[0]);
+				$("#maintable").datagrid('load');
+				$('#save').hide();
+				$('#redo').hide();
+				$.messager.alert("Error","该用户已存在!",errorText);
 			});
-
 		},
 		onSelect: function (rowIndex, rowData) {
 			console.log("onSelect" + rowData);
 			if (!IsCheckFlag) {
 				IsCheckFlag = true;
 				$("#maintable").datagrid("unselectRow", rowIndex);
-
-				if($('#tabs').tabs("exists",$('.editcls').eq(rowIndex).text() + rowData.name)) {
-					$('#tabs').tabs("select",$('.editcls').eq(rowIndex).text() + rowData.name)
-				}else {
-					$('#tabs').tabs('add', {
-						title: $('.editcls').eq(rowIndex).text() + rowData.name,
-						closable: true,
-						href: "/users/userdetail/"
-					});
-				}
+				//console.log(rowData._id);
+				//if($('#tabs').tabs("exists",$('.editcls').eq(rowIndex).text()  + " - " + rowData.name)) {
+				//	$('#tabs').tabs("select",$('.editcls').eq(rowIndex).text() + " - "  + rowData.name)
+				//}else {
+				//	$('#tabs').tabs('add', {
+				//		title: $('.editcls').eq(rowIndex).text() + " - " + rowData.name,
+				//		closable: true,
+				//		href: "/users/userdetail/" + rowData._id
+				//	});
+				//}
+				addTab($('.editcls').eq(rowIndex).text()  + " - " + rowData.name,"/users/userdetail/" + rowData._id);
 			}
 		}
 	});
@@ -163,3 +169,16 @@ obj = {
 		$("#maintable").datagrid('unselectAll');
 	}
 };
+
+function addTab(title, href){
+	if ($('#tabs').tabs('exists', title)){//如果tab已经存在,则选中并刷新该tab
+		$('#tabs').tabs('select', title);
+	} else {
+		var content = '<iframe scrolling="no" frameborder="0"  src="'+href+'" style="width:100%;height:100%;"></iframe>';
+		$('#tabs').tabs('add',{
+			title:title,
+			content:content,
+			closable:true
+		});
+	}
+}

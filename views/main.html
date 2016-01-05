@@ -1,0 +1,48 @@
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet' href='/stylesheets/themes/default/easyui.css'/>
+    <link rel='stylesheet' href='/stylesheets/themes/icon.css'/>
+</head>
+<body style="width: 100%;height: 100%;">
+
+<div style="border-top-style: dashed;border-bottom-style:dashed;width: 80%;height: 50px;margin: 10px">
+    <input id="hiddenId" type="hidden" value="<%= id%>">
+    <a href="#" style="margin: 10px;width: 130px" class="easyui-linkbutton" iconCls="icon-search"
+       onclick="showBasicInfo();">查看基本信息</a>
+    <a href="#" style="margin: 10px;width: 100px" class="easyui-linkbutton" iconCls="icon-search"
+       onclick="showLikes();">赞</a>
+    <a href="#" style="margin: 10px;width: 100px" class="easyui-linkbutton" iconCls="icon-search"
+       onclick="showShare();">分享</a>
+    <a href="#" style="margin: 10px;width: 100px" class="easyui-linkbutton" iconCls="icon-search"
+       onclick="showComment();">评论</a>
+</div>
+<div id="main-body" style="width: 100%;height: 80%">
+
+</div>
+<script type="application/javascript">
+    function showBasicInfo() {
+        $.get('/users/showdetail/' + $('#hiddenId').val(), function (data) {
+            $('#main-body').html(data);
+            $.parser.parse($('#main-body'));
+        });
+    }
+    function showLikes() {
+        $.get('/users/likes/' + $('#hiddenId').val(), function (data) {
+            $('#main-body').html(data);
+            $.parser.parse($('#main-body'));
+        });
+    }
+    function showShare() {
+        console.log($('#hiddenId').val())
+    }
+    function showComment() {
+
+    }
+</script>
+
+<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
+
+</body>
+</html>

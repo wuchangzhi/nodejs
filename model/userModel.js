@@ -3,12 +3,9 @@
  */
 var mongoose = require('mongoose');
 var UserSchema = require('../schema/userSchema');
-var config = require('../config');
+
 var eventproxy = require('eventproxy');
 var ep = new eventproxy();
-
-mongoose.connect(config.db);
-
 
 var UserModel = mongoose.model('user',UserSchema);
 
@@ -23,7 +20,7 @@ exports.findByName = function(username , callback){
 	UserModel.findOne({username:username} , callback);
 };
 exports.getUserById = function(id , callback){
-	UserModel.findOne({_id:id},callback);
+	UserModel.findOne({_id:id}).populate({'path':'courses',select: '-_id','model':'course'}).exec(callback);
 };
 
 
@@ -35,7 +32,6 @@ exports.remove = function(ids,callback){
 			ep.emit("remove",data);
 		});
 	});
-
 };
 
 exports.UserModel = UserModel;

@@ -1,0 +1,88 @@
+<form id="form_test" method="post">
+    <input name="id" type="hidden" value="<%= user.id %>">
+    <table id="detail" style="width: 500px">
+        <tr>
+            <td style="width:20%">学生姓名：</td>
+            <td style="width:40%" class="show" name="name"><%= user.name %></td>
+            <td style="width:40%;display: none"><input name="name" type="text"></td>
+        </tr>
+        <tr>
+            <td style="width:20%">学生年龄：</td>
+            <td style="width:40%" class="show" name="age"><%= user.age %></td>
+            <td style="width:40%;display: none"><input name="age" type="text"></td>
+        </tr>
+        <tr>
+            <td style="width:20%">学生邮箱：</td>
+            <td style="width:40%" class="show" name="email"><%= user.email %></td>
+            <td style="width:40%;display: none"><input name="email" type="email"></td>
+        </tr>
+    </table>
+</form>
+
+<a id="btn_test" class="easyui-linkbutton" onclick="modify();">修改</a>
+
+<script type="application/javascript">
+    function modify() {
+        if ($('#btn_test span:last').text() == "保存") {
+            $('#btn_test span:last').text("修改");
+
+            $('#form_test').form('submit',{
+                url: "/users/test",
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.errorMsg){
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.errorMsg
+                        });
+                    } else {
+                        $.messager.alert("提示",'修改成功','info',function(){
+                            $('.show').show();
+                            $('.show').next().hide();
+
+                            $('.show').each(function () {
+                                console.log(result[$(this).attr("name")]);
+                                $(this).text(result[$(this).attr("name")]);
+                            });
+                        });
+                    }
+                }
+            });
+        } else {
+            $('#btn_test span:last').text("保存");
+
+            $('.show').each(function () {
+                $(this).hide();
+                $(this).next().show();
+                $(this).next().find('input').val($(this).text());
+            });
+            $('.test:first').find('input').focus();
+        }
+    }
+
+    $(function () {
+        $('#maindata').datagrid({
+            url: "/users/courseData/" + $('#hiddenId').val(),
+            singleSelect: false,
+            fit: true,
+            fitColumns: true,
+            toolbar: '#toolbar',
+            columns: [[
+                {field: 'ck', checkbox: true, width: 10},
+                {field: "name", title: "学生姓名", width: 100},
+                {field: "courseName", title: "课程名称", width: 100},
+                {field: "score", title: "分数", width: 100}
+            ]],
+            pagination: true
+        });
+    });
+
+    function searchCourse() {
+        $('#maindata').datagrid('load', {
+            courseName: $('#courseName').val()
+        });
+    }
+</script>

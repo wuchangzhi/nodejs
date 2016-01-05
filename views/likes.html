@@ -1,0 +1,32 @@
+<table id="maindata" style="width: 100%;">
+
+</table>
+<div id="toolbar">
+    <span>课程名称:</span><input id="courseName" class="easyui-textbox"/>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchCourse();">Search</a>
+</div>
+
+<script type="application/javascript">
+    $(function(){
+        $('#maindata').datagrid({
+            url: "/users/courseData/" + $('#hiddenId').val(),
+            singleSelect: false,
+            fit: true,
+            fitColumns: true,
+            toolbar:'#toolbar',
+            columns:[[
+                {field: 'ck',checkbox: true, width: 10},
+                {field:"name",title:"学生姓名",width:100},
+                {field:"courseName",title:"课程名称",width:100},
+                {field:"score",title:"分数",width:100}
+            ]],
+            pagination: true
+        });
+    });
+
+    function searchCourse(){
+        $('#maindata').datagrid('load',{
+            courseName: $('#courseName').val()
+        });
+    }
+</script>
